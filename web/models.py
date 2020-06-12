@@ -53,6 +53,18 @@ class Car(models.Model):
         verbose_name_plural = "Машины"
 
 
+class Payment(models.Model):
+    """ Способы оплаты """
+    name = models.CharField("Способ оплаты", max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Способ оплаты"
+        verbose_name_plural = "Способы оплаты"
+
+
 class Order(models.Model):
     """ Заявка """
     title = models.CharField("Заголовок", max_length=100)
@@ -64,10 +76,9 @@ class Order(models.Model):
     width = models.PositiveSmallIntegerField('Ширина')
     height = models.PositiveSmallIntegerField('Высота')
     count = models.PositiveSmallIntegerField('Количество')
-    payment = models.CharField("Оплата", max_length=50)
+    payment = models.ForeignKey(Payment, verbose_name="Способ оплаты", on_delete=models.SET_NULL, null=True)
     description = models.TextField("Описание")
     image = models.ImageField("Изображение", upload_to="movie_shots/")
-    url = models.SlugField(max_length=130, unique=True)
     category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.SET_NULL, null=True)
     client = models.ForeignKey(User, verbose_name="Клиент", on_delete=models.CASCADE)
 

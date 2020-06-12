@@ -3,6 +3,7 @@ from django.views.generic.base import View
 
 from .models import Movie
 
+
 class MoviesView(View):
     """ Список фильмов """
     def get(self, request):
