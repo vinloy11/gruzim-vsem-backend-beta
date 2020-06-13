@@ -1,12 +1,18 @@
 from django.shortcuts import render
-from django.views.generic.list import View
+from django.views.generic import ListView, DetailView
+from django.views.generic.base import View
 
 from .models import Order
+
+
 # Create your views here.
 
 
-class OrdersView(View):
+class OrdersView(ListView):
     """Список заявок"""
-    def get(self, request):
-        orders = Order.objects.all()
-        return render(request, "orders.html", {"orders_list": orders})
+    model = Order
+    queryset = Order.objects.all()
+
+
+class OrderDetailView(DetailView):
+    model = Order

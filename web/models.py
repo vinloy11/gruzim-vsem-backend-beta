@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import date
 
+from django.urls import reverse
+
 
 class Category(models.Model):
     """ Категории """
@@ -23,7 +25,7 @@ class User(models.Model):
     phone = models.CharField("Телефон", max_length=20)
     email = models.EmailField()
     city = models.CharField("Город", max_length=50, default="Новосибирск")
-    image = models.ImageField("Изображение", upload_to="actors/")
+    image = models.ImageField("Изображение", upload_to="web/user")
 
     def __str__(self):
         return self.name
@@ -78,12 +80,15 @@ class Order(models.Model):
     count = models.PositiveSmallIntegerField('Количество')
     payment = models.ForeignKey(Payment, verbose_name="Способ оплаты", on_delete=models.SET_NULL, null=True)
     description = models.TextField("Описание")
-    image = models.ImageField("Изображение", upload_to="movie_shots/")
+    image = models.ImageField("Изображение", upload_to="web/order")
     category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.SET_NULL, null=True)
     client = models.ForeignKey(User, verbose_name="Клиент", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("order_details", kwargs={"pk": self.id})
 
     class Meta:
         verbose_name = "Заявка"
